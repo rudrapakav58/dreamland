@@ -7,7 +7,7 @@ app.secret_key = "thIsisaSecret!"
 @app.route('/', methods = ['GET','POST'])
 def index():
     res=request.form.to_dict()
-    print res
+    #print res
     return render_template('landingpage.html')
 @app.route('/reg', methods = ['GET','POST'])
 def newuser():
@@ -15,14 +15,14 @@ def newuser():
     return render_template('index.html')
 @app.route('/create', methods=['POST'])
 def create():
-    print "In create"
+    #print "In create"
     error = False
     first_name = request.form['first_name']
     last_name = request.form['last_name']
     email = request.form['email']
     password = request.form['password']
     password_confirmation = request.form['password_confirmation']
-    print request.form
+    #print request.form
 
     if len(first_name) < 1:
         error = True
