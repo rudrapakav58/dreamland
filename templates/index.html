@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Registration Form</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    </head>
+    <body>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    {{message}}
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form action="/create" method="post">
+            <h1>Please Register</h1>
+            <label for="first_name"><font color="red">*</font>First Name:</label>
+            <input type="text" id="first_name" name="first_name"><br/>
+           
+            <label for="last_name"><font color="red">*</font>Last Name:</label>
+            <input type="text" id="last_name" name="last_name"><br/>
+           
+            <label for="email"><font color="red">*</font>Email:</label>
+            <input type="text" id="email" name="email"><br/>
+
+            <label for="password"><font color="red">*</font>Password:</label>
+            <input type="password" id="password" name="password"><br/>
+            <label for="password_confirmation"><font color="red">*</font>Password Confirmation:</label>
+            <input type="password" id="password_confirmation" name="password_confirmation"><br/>
+
+            <input type='submit' value='click here to register'>
+        </form>
+    </body>
+</html>
