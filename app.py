@@ -63,4 +63,4 @@ def create():
 
     flash('You Are Now A Registered User!')
     return redirect('/')
-app.run(debug=True,port=8008)
+app.run(debug=True)
