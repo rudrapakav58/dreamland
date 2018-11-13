@@ -7,7 +7,7 @@ app.secret_key = "thIsisaSecret!"
 @app.route('/', methods = ['GET','POST'])
 def index():
     result=request.form.to_dict()
-    print(result)
+    #print(result)
     return render_template('landingpage.html')
 @app.route('/reg', methods = ['GET','POST'])
 def newuser():
@@ -63,4 +63,4 @@ def create():
 
     flash('You Are Now A Registered User!')
     return redirect('/')
-app.run(debug=True,port=5005)
+app.run(debug=True)
