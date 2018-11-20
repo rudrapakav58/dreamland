@@ -142,7 +142,7 @@ def post():
         elif len(result['dream_type'])>1:
             dream=result['dream']
             post_type=result['category']
-            msg="Thanks for filling out our form! "
+            msg="Thanks for feeling  out your dream"
             return render_template('dream_post.html',dream=dream,msg=msg)
 
     except:
