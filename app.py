@@ -144,7 +144,6 @@ def post():
             post_type=result['category']
             msg="Thanks for feeling  out your dream"
             return render_template('dream_post.html',dream=dream,msg=msg)
-
     except:
         pass
 
