@@ -83,6 +83,7 @@ def index():
                         db.close()
                         msg="You Are Now A Registered User!"
                         return render_template('reg_user.html',msg=msg)
+                        #return redirect('/post')
                 except:
                     pass
             else:
@@ -118,7 +119,8 @@ def Login():
             password_user = cur.fetchone()
             if password_user[0] == password:
                 msg = "You are logged in"
-                return render_template('homepage.html', msg=msg)
+                #return render_template('homepage.html', msg=msg)
+                return redirect('/post')
             else:
                 msg = "Password is incorrect."
                 return render_template('login.html', msg=msg)
@@ -130,37 +132,21 @@ def Login():
         db.close()
     except:
         pass
+@app.route('/post',methods=['GET', 'POST'])
+def post():
+    try:
+        result = request.form.to_dict()
+        #print(result)
+        if result=={}:
+            return render_template('dream_post.html')
+        elif len(result['dream_type'])>1:
+            dream=result['dream']
+            post_type=result['category']
+            msg="Thanks for filling out our form! "
+            return render_template('dream_post.html',dream=dream,msg=msg)
 
+    except:
+        pass
 
-# @app.route('/reg', methods=['POST'])
-# def user_reg():
-#     print("In create")
-#     error = False
-#     result = request.form.to_dict()
-#     print(result)
-#     if result['password'] != result['c_password']:
-#         flash('Passwords do not match')
-#         return redirect('/reg')
-#     if result['password'] == result['c_password']:
-#         print(result['first_name'])
-#         db = psycopg2.connect(
-#             database="dcore2hl3fm13v",
-#             user="pnevkxlqdlmdif",
-#             password="4d4a6fea5afacaab6d2e7372233725045c0b183e96925dec212ddf0ac468cdc1",
-#             host="ec2-174-129-192-200.compute-1.amazonaws.com"
-#         )
-#         cur = db.cursor()
-#         cur.execute(
-#             "INSERT INTO test_user (First_name,Last_name,Email,Password,Dob,Gender) VALUES ('{}','{}','{}','{}',{},'{}')".format(
-#                 result['first_name'], result['last_name'], result['mail'], result['password'],
-#                 result['datetimepicker'],
-#                 result['gender']))
-#         db.commit()
-#         print("Records created successfully")
-#         db.close()
-#     else:
-#         flash('You Are Now A Registered User!')
-#         return redirect('/')
-#     return render_template('landingpage.html')
 if __name__ == '__main__':
     app.run(debug=True,host='0.0.0.0')
