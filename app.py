@@ -82,8 +82,8 @@ def index():
                         #print(" user info created successfully")
                         db.close()
                         msg="You Are Now A Registered User!"
-                        return render_template('reg_user.html',msg=msg)
-                        #return redirect('/post')
+                        #return render_template('reg_user.html',msg=msg)
+                        return redirect('/post')
                 except:
                     pass
             else:
