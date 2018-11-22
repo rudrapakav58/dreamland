@@ -206,11 +206,17 @@ def post():
             for x in range(1):
                 id1=random.randint(1, 100000)
             db = psycopg2.connect(
-                database="Dreamland",
-                user="postgres",
-                password="1234",
-                host="localhost"
+                database="dcore2hl3fm13v",
+                user="pnevkxlqdlmdif",
+                password="4d4a6fea5afacaab6d2e7372233725045c0b183e96925dec212ddf0ac468cdc1",
+                host="ec2-174-129-192-200.compute-1.amazonaws.com"
             )
+            # db = psycopg2.connect(
+            #     database="Dreamland",
+            #     user="postgres",
+            #     password="1234",
+            #     host="localhost"
+            # )
             cur = db.cursor()
             cur.execute(
                 "INSERT INTO user_dreams (id,user_name,date_post,dream) VALUES ('{}',0,0,'{}')".format(
@@ -221,11 +227,17 @@ def post():
             print(result['dream'])
             db.close()
             db = psycopg2.connect(
-                database="Dreamland",
-                user="postgres",
-                password="1234",
-                host="localhost"
+                database="dcore2hl3fm13v",
+                user="pnevkxlqdlmdif",
+                password="4d4a6fea5afacaab6d2e7372233725045c0b183e96925dec212ddf0ac468cdc1",
+                host="ec2-174-129-192-200.compute-1.amazonaws.com"
             )
+            # db = psycopg2.connect(
+            #     database="Dreamland",
+            #     user="postgres",
+            #     password="1234",
+            #     host="localhost"
+            # )
             cur = db.cursor()
             cur.execute("SELECT dream From user_dreams")
             dream_user1 = cur.fetchall()
