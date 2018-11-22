@@ -206,11 +206,11 @@
 									</div>
 									<div class="form-group label-floating is-empty">
 										<label class="control-label"><font color="red">*</font>Your Password</label>
-										<input class="form-control" name="password" placeholder="" type="password" required>
+										<input class="form-control" id="password" name="password" placeholder="" type="password" minlength="8" required>
 									</div>
 									<div class="form-group label-floating is-empty">
 										<label class="control-label"><font color="red">*</font>Confirm Password</label>
-										<input class="form-control" name="c_password" placeholder="" type="password" required>
+										<input class="form-control" id="confirm_password" name="c_password" placeholder="" type="password" required>
 									</div>
 
 
@@ -253,7 +253,7 @@
 												Remember Me
 											</label>
 										</div>
-										<a href="#" class="forgot">Forgot my Password</a>
+										<a href="/verify" class="forgot">Forgot my Password</a>
 									</div>
 
 									<button class="btn btn-lg btn-primary full-width">Login</button>
@@ -317,6 +317,21 @@
 <script defer src="static/fonts/fontawesome-all.js"></script>
 
 <script src="static/Bootstrap/dist/js/bootstrap.bundle.js"></script>
+<script>
+	var password = document.getElementById("password")
+  , confirm_password = document.getElementById("confirm_password");
+
+function validatePassword(){
+  if(password.value != confirm_password.value) {
+    confirm_password.setCustomValidity("Passwords Don't Match");
+  } else {
+    confirm_password.setCustomValidity('');
+  }
+}
+
+password.onchange = validatePassword;
+confirm_password.onkeyup = validatePassword;
+</script>
 
 </body>
 

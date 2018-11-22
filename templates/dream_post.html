@@ -60,5 +60,7 @@
 
 </div><br/><h2 style="text-align:center;color:red">{{msg}}</h2>
 <h3 >Your last dream</h3>
-<h4 style="color:#474646">{{dream}}</h4>
+{% for items in dream_user %}
+<h4 style="color:#474646">{{items}}</h4><br/>
+{%endfor%}
 </body></html>
