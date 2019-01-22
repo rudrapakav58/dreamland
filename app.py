@@ -11,7 +11,6 @@ import smtplib
 from email.mime.text import MIMEText
 import random
 import string
-
 app = Flask(__name__)
 # db = psycopg2.connect(
 #     database = "Dreamland",
@@ -284,5 +283,4 @@ def logout():
         # return e
     return redirect("/")
 if __name__ == '__main__':
-
     app.run(debug=True,host='0.0.0.0')
