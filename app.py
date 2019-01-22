@@ -1,4 +1,10 @@
-from flask import Flask, render_template, request,flash,redirect
+from flask import Flask
+from flask_login import LoginManager
+from flask import render_template, jsonify, make_response, request, redirect, flash, url_for
+from flask_login import current_user
+from flask_login import login_user, logout_user, login_required
+from flask import Blueprint
+from flask import session as flask_sess
 import psycopg2
 import base64
 import smtplib
@@ -35,21 +41,21 @@ def index():
             pass
         try:
             mail_id=result['mail']
-            db = psycopg2.connect(
-                database="dcore2hl3fm13v",
-                user="pnevkxlqdlmdif",
-                password="4d4a6fea5afacaab6d2e7372233725045c0b183e96925dec212ddf0ac468cdc1",
-                host="ec2-174-129-192-200.compute-1.amazonaws.com"
-            )
-            # print(db)
             # db = psycopg2.connect(
-            #     database="Dreamland",
-            #     user="postgres",
-            #     password="1234",
-            #     host="localhost"
+            #     database="dcore2hl3fm13v",
+            #     user="pnevkxlqdlmdif",
+            #     password="4d4a6fea5afacaab6d2e7372233725045c0b183e96925dec212ddf0ac468cdc1",
+            #     host="ec2-174-129-192-200.compute-1.amazonaws.com"
             # )
+            # print(db)
+            db = psycopg2.connect(
+                database="Dreamland",
+                user="postgres",
+                password="1234",
+                host="localhost"
+            )
             cur = db.cursor()
-            cur.execute("SELECT email FROM test_user1 where email='{}'".format(mail_id))
+            cur.execute("SELECT email FROM test_user where email='{}'".format(mail_id))
             email_id = cur.fetchone()
             db.commit()
             # print(" user info created successfully")
@@ -66,24 +72,24 @@ def index():
                         return render_template('reg_user.html',msg=msg)
                     elif result['password'] == result['c_password']:
                         # print(type(mail_id))
-                        # print(result['first_name'])
-                        db = psycopg2.connect(
-                            database="dcore2hl3fm13v",
-                            user="pnevkxlqdlmdif",
-                            password="4d4a6fea5afacaab6d2e7372233725045c0b183e96925dec212ddf0ac468cdc1",
-                            host="ec2-174-129-192-200.compute-1.amazonaws.com"
-                        )
+                        print(result['first_name'])
                         # db = psycopg2.connect(
-                        #     database="Dreamland",
-                        #     user="postgres",
-                        #     password="1234",
-                        #     host="localhost"
+                        #     database="dcore2hl3fm13v",
+                        #     user="pnevkxlqdlmdif",
+                        #     password="4d4a6fea5afacaab6d2e7372233725045c0b183e96925dec212ddf0ac468cdc1",
+                        #     host="ec2-174-129-192-200.compute-1.amazonaws.com"
                         # )
+                        db = psycopg2.connect(
+                            database="Dreamland",
+                            user="postgres",
+                            password="1234",
+                            host="localhost"
+                        )
                         enc = base64.b64encode(result['password'].encode())
                         enc = enc.decode()
                         cur = db.cursor()
                         cur.execute(
-                            "INSERT INTO test_user1 (First_name,Last_name,Email,Password,Dob,Gender) VALUES ('{}','{}','{}','{}',0,0)".format(
+                            "INSERT INTO test_user (First_name,Last_name,Email,Password,Dob,Gender) VALUES ('{}','{}','{}','{}',0,0)".format(
                                 result['first_name'], result['last_name'], result['mail'], enc))
                         db.commit()
                         #print(" user info created successfully")
@@ -104,24 +110,31 @@ def index():
             pass
 @app.route('/login',methods=['GET', 'POST'])
 def Login():
+    error = None
     try:
         result = request.form.to_dict()
         email = result['mail']
         password = result['password']
+        # db = psycopg2.connect(
+        #                         database = "dcore2hl3fm13v",
+        #                         user = "pnevkxlqdlmdif",
+        #                         password = "4d4a6fea5afacaab6d2e7372233725045c0b183e96925dec212ddf0ac468cdc1",
+        #                         host = "ec2-174-129-192-200.compute-1.amazonaws.com"
+        #                     )
         db = psycopg2.connect(
-                                database = "dcore2hl3fm13v",
-                                user = "pnevkxlqdlmdif",
-                                password = "4d4a6fea5afacaab6d2e7372233725045c0b183e96925dec212ddf0ac468cdc1",
-                                host = "ec2-174-129-192-200.compute-1.amazonaws.com"
-                            )
+            database="Dreamland",
+            user="postgres",
+            password="1234",
+            host="localhost"
+        )
         cur = db.cursor()
-        cur.execute("SELECT email,password FROM test_user1 where email='{}'".format(email))
+        cur.execute("SELECT email,password FROM test_user where email='{}'".format(email))
         mail_user = cur.fetchone()
         if mail_user == None:
             msg = "Username is incorrect."
             return render_template('login.html', msg=msg)
         elif str(email) == mail_user[0]:
-            cur.execute("SELECT password From test_user1 where email='{}'".format(email))
+            cur.execute("SELECT password From test_user where email='{}'".format(email))
             password_user = cur.fetchone()
             enc = base64.b64encode(password.encode())
             enc = enc.decode()
@@ -159,6 +172,12 @@ def verify():
                 password="4d4a6fea5afacaab6d2e7372233725045c0b183e96925dec212ddf0ac468cdc1",
                 host="ec2-174-129-192-200.compute-1.amazonaws.com"
             )
+            # db = psycopg2.connect(
+            #     database="Dreamland",
+            #     user="postgres",
+            #     password="1234",
+            #     host="localhost"
+            # )
             email = result['mail']
             cur = db.cursor()
             cur.execute("SELECT email,password FROM test_user1 where email='{}'".format(email))
@@ -252,5 +271,18 @@ def post():
             return render_template('dream_post.html',dream=dream,msg=msg,dream_user=dream_user)
     except:
         pass
+@app.route('/logout',methods=['GET', 'POST'])
+def logout():
+    try:
+        user = current_user
+        user.authenticated = False
+        logout_user()
+        flask_sess.clear()
+        logout_user()
+    except Exception as e:
+        print(e)
+        # return e
+    return redirect("/")
 if __name__ == '__main__':
+
     app.run(debug=True,host='0.0.0.0')
