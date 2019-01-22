@@ -41,19 +41,19 @@ def index():
             pass
         try:
             mail_id=result['mail']
-            # db = psycopg2.connect(
-            #     database="dcore2hl3fm13v",
-            #     user="pnevkxlqdlmdif",
-            #     password="4d4a6fea5afacaab6d2e7372233725045c0b183e96925dec212ddf0ac468cdc1",
-            #     host="ec2-174-129-192-200.compute-1.amazonaws.com"
-            # )
-            # print(db)
             db = psycopg2.connect(
-                database="Dreamland",
-                user="postgres",
-                password="1234",
-                host="localhost"
+                database="d5c3kekvf7cuup",
+                user="gpthqvlaxsrwoq",
+                password="9e12360d9c5c3faef58af66954d23af49d19991549fdd787969b9a80aa8e9c70",
+                host="ec2-54-235-156-60.compute-1.amazonaws.com"
             )
+            print(db)
+            # db = psycopg2.connect(
+            #     database="Dreamland",
+            #     user="postgres",
+            #     password="1234",
+            #     host="localhost"
+            # )
             cur = db.cursor()
             cur.execute("SELECT email FROM test_user where email='{}'".format(mail_id))
             email_id = cur.fetchone()
@@ -73,18 +73,18 @@ def index():
                     elif result['password'] == result['c_password']:
                         # print(type(mail_id))
                         print(result['first_name'])
-                        # db = psycopg2.connect(
-                        #     database="dcore2hl3fm13v",
-                        #     user="pnevkxlqdlmdif",
-                        #     password="4d4a6fea5afacaab6d2e7372233725045c0b183e96925dec212ddf0ac468cdc1",
-                        #     host="ec2-174-129-192-200.compute-1.amazonaws.com"
-                        # )
                         db = psycopg2.connect(
-                            database="Dreamland",
-                            user="postgres",
-                            password="1234",
-                            host="localhost"
+                            database="d5c3kekvf7cuup",
+                            user="gpthqvlaxsrwoq",
+                            password="9e12360d9c5c3faef58af66954d23af49d19991549fdd787969b9a80aa8e9c70",
+                            host="ec2-54-235-156-60.compute-1.amazonaws.com"
                         )
+                        # db = psycopg2.connect(
+                        #     database="Dreamland",
+                        #     user="postgres",
+                        #     password="1234",
+                        #     host="localhost"
+                        # )
                         enc = base64.b64encode(result['password'].encode())
                         enc = enc.decode()
                         cur = db.cursor()
@@ -115,18 +115,18 @@ def Login():
         result = request.form.to_dict()
         email = result['mail']
         password = result['password']
-        # db = psycopg2.connect(
-        #                         database = "dcore2hl3fm13v",
-        #                         user = "pnevkxlqdlmdif",
-        #                         password = "4d4a6fea5afacaab6d2e7372233725045c0b183e96925dec212ddf0ac468cdc1",
-        #                         host = "ec2-174-129-192-200.compute-1.amazonaws.com"
-        #                     )
         db = psycopg2.connect(
-            database="Dreamland",
-            user="postgres",
-            password="1234",
-            host="localhost"
-        )
+            database="d5c3kekvf7cuup",
+            user="gpthqvlaxsrwoq",
+            password="9e12360d9c5c3faef58af66954d23af49d19991549fdd787969b9a80aa8e9c70",
+            host="ec2-54-235-156-60.compute-1.amazonaws.com"
+                            )
+        # db = psycopg2.connect(
+        #     database="Dreamland",
+        #     user="postgres",
+        #     password="1234",
+        #     host="localhost"
+        # )
         cur = db.cursor()
         cur.execute("SELECT email,password FROM test_user where email='{}'".format(email))
         mail_user = cur.fetchone()
