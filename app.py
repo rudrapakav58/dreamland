@@ -29,7 +29,7 @@ app = Flask(__name__)
 def index():
         try:
             result = request.form.to_dict()
-            #print(result)
+            print(result)
 
         except:
             pass
@@ -71,7 +71,7 @@ def index():
                         return render_template('reg_user.html',msg=msg)
                     elif result['password'] == result['c_password']:
                         # print(type(mail_id))
-                        print(result['first_name'])
+                        #print(result['first_name'])
                         db = psycopg2.connect(
                             database="d5c3kekvf7cuup",
                             user="gpthqvlaxsrwoq",
@@ -86,9 +86,10 @@ def index():
                         # )
                         enc = base64.b64encode(result['password'].encode())
                         enc = enc.decode()
+                        print(type(enc))
                         cur = db.cursor()
                         cur.execute(
-                            "INSERT INTO test_user (First_name,Last_name,Email,Password,Dob,Gender) VALUES ('{}','{}','{}','{}',0,0)".format(
+                            "INSERT INTO test_user (first_name,last_name,email,password) VALUES ('{}','{}','{}','{}')".format(
                                 result['first_name'], result['last_name'], result['mail'], enc))
                         db.commit()
                         #print(" user info created successfully")
@@ -166,10 +167,10 @@ def verify():
             return render_template('forgot_password.html')
         else:
             db = psycopg2.connect(
-                database="dcore2hl3fm13v",
-                user="pnevkxlqdlmdif",
-                password="4d4a6fea5afacaab6d2e7372233725045c0b183e96925dec212ddf0ac468cdc1",
-                host="ec2-174-129-192-200.compute-1.amazonaws.com"
+                database="d5c3kekvf7cuup",
+                user="gpthqvlaxsrwoq",
+                password="9e12360d9c5c3faef58af66954d23af49d19991549fdd787969b9a80aa8e9c70",
+                host="ec2-54-235-156-60.compute-1.amazonaws.com"
             )
             # db = psycopg2.connect(
             #     database="Dreamland",
@@ -179,7 +180,7 @@ def verify():
             # )
             email = result['mail']
             cur = db.cursor()
-            cur.execute("SELECT email,password FROM test_user1 where email='{}'".format(email))
+            cur.execute("SELECT email,password FROM test_user where email='{}'".format(email))
             mail_user = cur.fetchone()
             if mail_user==None:
                 msg = 'Incorrect mail ID'
@@ -190,7 +191,7 @@ def verify():
                 newPassword = (''.join(newPassword)).encode()
                 enc = base64.b64encode(newPassword)
                 enc = enc.decode()
-                cur.execute("UPDATE test_user1 SET password = '{}' WHERE email = '{}';".format(str(enc),str(mail_user[0])))
+                cur.execute("UPDATE test_user SET password = '{}' WHERE email = '{}';".format(str(enc),str(mail_user[0])))
                 db.commit()
                 db.close()
                 msg = 'New Password sent to your mail'
